@@ -5,14 +5,14 @@ from time import sleep
 class Adafruit_CharLCD:
 
     # commands
-    LCD_CLEARDISPLAY 		= 0x01
+    LCD_CLEARDISPLAY 	= 0x01
     LCD_RETURNHOME 		= 0x02
-    LCD_ENTRYMODESET 		= 0x04
-    LCD_DISPLAYCONTROL 		= 0x08
-    LCD_CURSORSHIFT 		= 0x10
-    LCD_FUNCTIONSET 		= 0x20
-    LCD_SETCGRAMADDR 		= 0x40
-    LCD_SETDDRAMADDR 		= 0x80
+    LCD_ENTRYMODESET 	= 0x04
+    LCD_DISPLAYCONTROL 	= 0x08
+    LCD_CURSORSHIFT 	= 0x10
+    LCD_FUNCTIONSET 	= 0x20
+    LCD_SETCGRAMADDR 	= 0x40
+    LCD_SETDDRAMADDR 	= 0x80
 
     # flags for display entry mode
     LCD_ENTRYRIGHT 		= 0x00
@@ -53,6 +53,7 @@ class Adafruit_CharLCD:
         # an explicit GPIO interface to use
         if not GPIO:
             import RPi.GPIO as GPIO
+        GPIO.cleanup()
         self.GPIO = GPIO
         self.pin_rs = pin_rs
         self.pin_e = pin_e
@@ -244,11 +245,14 @@ class Adafruit_CharLCD:
                 self.write4bits(0xC0) # next line
             else:
                 self.write4bits(ord(char),True)
-
+    def destroy(self):
+        self.GPIO.cleanup()
 
 if __name__ == '__main__':
 
     lcd = Adafruit_CharLCD()
 
     lcd.clear()
-    lcd.message("   Updated \nPlease check out") #可以进行修改
+    lcd.message("Hello!\nWelcome you dirty piece of shit :)") #可以进行修改
+    lcd.autoscroll()
+    lcd.destroy()
